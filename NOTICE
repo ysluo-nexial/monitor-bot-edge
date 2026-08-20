@@ -1,0 +1,11 @@
+Monitor bot Edge
+Copyright (C) 2026 Nexial Technology LTD. / 朔域科技有限公司
+
+This program is free software under the GNU Affero General Public License
+v3.0 or later. See LICENSE.
+
+This software uses Ultralytics YOLO (AGPL-3.0).
+See https://www.ultralytics.com/license and https://github.com/ultralytics/ultralytics
+
+YOLO-World model weights are obtained separately (Ultralytics download or your own file).
+They are not distributed from this repository.
