@@ -14,5 +14,11 @@ __pycache__/
 *.m4v
 demo_data/
 demo_outputs/
+outputs/
 license/license.json
 .github/workflows/
+.pytest_cache/
+.mypy_cache/
+*.egg-info/
+dist/
+build/

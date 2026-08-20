@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "monitor-bot-edge"
+version = "1.0.0"
+description = "Monitor bot Edge — on-prem kindergarten safety vision (YOLO-World)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "AGPL-3.0-or-later" }
+authors = [
+  { name = "Nexial Technology LTD. / 朔域科技有限公司" },
+]
+dependencies = [
+  "ultralytics>=8.3.0",
+  "opencv-python-headless>=4.10.0",
+  "pillow>=10.0.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0"]
+
+[project.scripts]
+monitor-bot-edge = "monitor_bot_edge.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["monitor_bot_edge*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
