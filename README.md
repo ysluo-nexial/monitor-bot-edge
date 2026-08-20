@@ -1,19 +1,17 @@
 # Monitor bot Edge
 
-On-prem kindergarten safety vision for [Monitor bot](https://github.com/ysluo-nexial/monitor-bot-edge).
-Uses [Ultralytics YOLO-World](https://docs.ultralytics.com/models/yolo-world/) for open-vocabulary detection.
+On-prem kindergarten safety vision for Monitor bot.
+YOLO-World open-vocabulary detection, then IoU tracking and geometry/time rules (fall, climb, alone, crowd). No Qwen / GGUF.
 
+**Brand:** Monitor bot Edge  
+**Copyright:** Nexial Technology LTD. / 朔域科技有限公司 2026  
 **License:** [AGPL-3.0-or-later](LICENSE)
 
-This repository is the public corresponding source for the on-prem compute. The cloud admin, SI portal, and Monitor bot mobile app are separate closed products and are not in this repo.
+Public corresponding source for the on-prem compute. Cloud admin, SI portal, and the Monitor bot app are separate closed products.
 
 ## Commercial use
 
-You may run and modify this code under AGPL-3.0. **A product key from the license server is required to start recognition.**
-
-1. A contracted system integrator receives an API key from the vendor.
-2. The SI applies for a product key (one key → one venue, one machine).
-3. On the venue machine:
+AGPL-3.0-or-later. **A product key is required to start recognition.** One key → one venue, one machine.
 
 ```bash
 export LICENSE_SERVER_URL=https://your-license-server.example
@@ -21,27 +19,41 @@ export PRODUCT_KEY=your-product-key
 python scripts/activate.py
 ```
 
-Without a valid local license, the detector will not start. Video and detections stay on site.
-
-## This release (YOLO only)
-
-- Runtime: YOLO-World (`yolov8s-world.pt` or the weight you configure)
-- Qwen-VL is optional and **not** required for launch
-- Weights are **not** stored in git. Ultralytics can download them at install time.
+Without `license/license.json` containing `license_token`, detect will not load YOLO. Video stays on site.
 
 ## CI / CD
 
-**Do not add GitHub Actions to this repository.**  
-Public GitHub is source only. Build, test, and deploy run on the vendor GitLab (`git.nexial.com.tw`). There is no `.github/workflows` here and none should be added.
+**Do not add GitHub Actions.** This GitHub repo is source only. Build, test, and deploy run on GitLab (`git.nexial.com.tw`).
 
-## What is not in this repo
+## Quick start (local mock)
 
-- Kindergarten / toddler videos or CCTV
-- Model weight files (`.pt`, `.gguf`)
-- Cloud billing, accounts, or key issuance
-- Partner or government reports
-- Test Station integration
+```bash
+python -m pip install -e ".[dev]"
 
-## Status
+# 1) mock license server
+python scripts/mock_license_server.py --host 127.0.0.1 --port 8765
 
-Skeleton for the public edge. Detection code and activate-against-license-server land next.
+# 2) activate this machine
+export LICENSE_SERVER_URL=http://127.0.0.1:8765
+export PRODUCT_KEY=dev-key
+export MACHINE_ID=venue-dev-1
+python scripts/activate.py
+
+# 3) detect (downloads yolov8s-world.pt on first run)
+python -m monitor_bot_edge detect \
+  --video /path/to/on_site.mp4 \
+  --keywords "幼兒,跌倒,攀爬" \
+  --output-dir outputs
+```
+
+Outputs: `<stem>.annotated.mp4` and `<stem>.events.jsonl` (`time`, `label`, `confidence`, `box`).
+
+## Tests (no GPU, no weights)
+
+```bash
+PYTHONPATH=. python -m pytest -q
+```
+
+## Not in this repo
+
+Kindergarten videos, `.pt` / `.gguf` weights, billing, partner reports, Test Station.
