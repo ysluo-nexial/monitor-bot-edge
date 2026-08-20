@@ -9,3 +9,6 @@ See https://www.ultralytics.com/license and https://github.com/ultralytics/ultra
 
 YOLO-World model weights are obtained separately (Ultralytics download or your own file).
 They are not distributed from this repository.
+
+This corresponding source is Monitor bot Edge M1 (YOLO-World open-vocabulary
+detection plus geometry/time safety rules). Qwen / GGUF are not used.
